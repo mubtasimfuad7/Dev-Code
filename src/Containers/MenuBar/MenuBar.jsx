@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import VerticalContainer from "../../Components/VerticalContainer";
 import ButtonType1 from "../../Elements/Buttons/ButtonType1";
 import MenuButton from "../../Elements/Buttons/MenuButton";
 import FileDrowdown from "../../Components/FileDrowdown";
+import aiContext from "../../contexts/AiContexts/aiContext";
 
-const MenuBar = ({setShowPreview}) => {
+const MenuBar = ({ setShowPreview }) => {
+  const { showModel, setShowModel } = useContext(aiContext);
+
   return (
     <VerticalContainer className="p-0.5 gap-0.5 bg-gray-800 flex items-center h-[30px]">
       <p className="font-bold text-white px-2">Dev Code</p>
@@ -37,6 +40,7 @@ const MenuBar = ({setShowPreview}) => {
       <MenuButton button_text={"Select"}></MenuButton>
       <MenuButton button_text={"Open Preview"}></MenuButton>
       <ButtonType1 button_text={"Show Preview"} event_handler={()=>{setShowPreview(prev=>!prev)}}></ButtonType1>
+      <ButtonType1 button_text={"Show Model"} event_handler={()=>{setShowModel(prev=>!prev)}}></ButtonType1>
     </VerticalContainer>
   );
 };

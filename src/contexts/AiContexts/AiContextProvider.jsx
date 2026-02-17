@@ -4,6 +4,7 @@ import { initEngine } from "./aiContextController";
 
 const AiContextProvider = ({ children }) => {
   const engineRef = useRef(null);
+  const [showModel, setShowModel] = useState(false);
   const [modelStatus, setModelStatus] = useState("");
 
   const [isThinking, setIsThinking] = useState(false);
@@ -107,6 +108,8 @@ Follow these rules carefully:
     input,
     setInput,
     handleSend,
+    showModel, 
+    setShowModel
   };
 
   return (

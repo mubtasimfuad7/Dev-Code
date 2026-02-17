@@ -13,8 +13,8 @@ const App = () => {
     <div className="ide_container w-full h-screen overflow-y-hidden">
       <MenuBar setShowPreview={setShowPreview}></MenuBar>
       <Preview showPreview={showPreview} setShowPreview={setShowPreview}></Preview>
+      <div className="flex relative justify-between w-full h-[calc(100%-30px)]">
       <AiModel></AiModel>
-      <div className="flex justify-between w-full h-[calc(100%-30px)]">
         <ResizablePane>
           <Sidebar></Sidebar>
         </ResizablePane>
