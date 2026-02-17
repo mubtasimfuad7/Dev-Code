@@ -76,7 +76,7 @@ const Terminal = () => {
   }
 
   return (
-    <div className="h-full bg-[#1e1e1e] overflow-hidden">
+    <div className="h-full flex-1 bg-[#1e1e1e] overflow-hidden">
       <div ref={terminalRef} className="h-full w-full" />
     </div>
   );
