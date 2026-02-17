@@ -41,9 +41,13 @@ export const AppContextProvider = ({ children }) => {
 
   useEffect(() => {
     const createWebContainer = async () => {
-      if (!webContainer) {
-        const webContainerInstance = await WebContainer.boot();
-        setWebContainer(webContainerInstance);
+      try {
+        if (!webContainer) {
+          const webContainerInstance = await WebContainer.boot();
+          setWebContainer(webContainerInstance);
+        }
+      } catch (e) {
+        console.log("*****webcontainer error: ", e)
       }
     };
     createWebContainer();
