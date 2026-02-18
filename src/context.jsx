@@ -19,6 +19,19 @@ export const AppContextProvider = ({ children }) => {
   //webcontainr
   const [webContainer, setWebContainer] = useState(null);
 
+  const createANewFolder = async(path_handle, folder_name)=>{
+    try{
+      //check if path handle and folder name exists
+      if(!path_handle || !folder_name) return;
+
+      const dup_folder_tree = {...folderTree};
+      
+
+    }catch(e){
+      console.log("Error while creating a new folder")
+    }
+  }
+
 
   useEffect(() => {
     if (!folderPath || !webContainer) return;

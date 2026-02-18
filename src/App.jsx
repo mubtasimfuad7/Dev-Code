@@ -14,7 +14,7 @@ const App = () => {
       <MenuBar setShowPreview={setShowPreview}></MenuBar>
       <Preview showPreview={showPreview} setShowPreview={setShowPreview}></Preview>
       <div className="flex relative justify-between w-full h-[calc(100%-30px)]">
-      <AiModel></AiModel>
+      {/* <AiModel></AiModel> */}
         <ResizablePane>
           <Sidebar></Sidebar>
         </ResizablePane>

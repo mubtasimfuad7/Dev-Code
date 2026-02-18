@@ -2,7 +2,7 @@ const buildFolderTree = async (handle, parent = "", isRoot = false) => {
   try {
     if (!handle) return;
         const currentPath = isRoot ? "" : `${parent}/${handle.name}`;
-
+        console.log(currentPath || "");
         const node = {
           name: handle.name,
           kind: handle.kind,
@@ -13,6 +13,7 @@ const buildFolderTree = async (handle, parent = "", isRoot = false) => {
 
       if (handle.kind === "directory") {
           for await (const entry of handle.values()) {
+            if(entry && entry.name === 'node_modules') continue;
             node.children.push(await buildFolderTree(entry, node.path));
           }
 
@@ -94,6 +95,47 @@ const mountWebContainer = async (fs_tree, webContainer, setWebContainer) => {
     console.log("Mounting complete.");
   } catch (e) {
     console.error("Error while Booting/Mounting WebContainer:", e);
+  }
+};
+
+
+const createNewFolder = async (folderHandle, webContainer, path, foldername) => {
+  try {
+    //check if the folder handle and webcontainer exists or not 
+    //if does not exists then we can move further
+    if (!folderHandle || !webContainer) return;
+
+    //create a new folder inside the given folderHandle 
+    //which will make a new folder inside the given handle in the local filesystem(os)
+    const newFolderHandle = await folderHandle.getDirectoryHandle(foldername, { create: true });
+
+    //if the file is created successfully then proccedd
+    //this folder or file creation may fail if the foldername is a duplicate folder name inside the folder path
+    if (newFolderHandle) {
+      //construct the new folder/file path by appending the folder name
+      const fullPath = path ? `${path}/${foldername}` : foldername;
+
+      //
+      await remountWebcontainer(webContainer, fullPath);
+
+      console.log(`Folder created at: ${fullPath}`);
+
+      return newFolderHandle;
+    }
+  } catch (e) {
+    console.error("Error while creating the new folder:", e);
+  }
+};
+
+const remountWebcontainer = async (webContainer, fs_path) => {
+  try {
+    if (!webContainer || !fs_path) return;
+
+    await webContainer.fs.mkdir(fs_path, { recursive: true });
+    
+    console.log(`Path synced to WebContainer: ${fs_path}`);
+  } catch (e) {
+    console.error("Error while syncing path to webcontainer:", e);
   }
 };
 
