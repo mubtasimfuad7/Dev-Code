@@ -16,6 +16,11 @@ const AiModel = () => {
     handleSend,
     showModel,
     setShowModel,
+    sessions,
+    activeSessionId,
+    createNewChat,
+    switchChat,
+    deleteChat,
   } = useContext(aiContext);
 
   const scrollRef = useRef(null);
@@ -33,9 +38,9 @@ const AiModel = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
-      <div className="relative flex h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#171717] shadow-2xl">
+      <div className="relative flex h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#171717] shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-white/5 bg-[#212121] px-6 py-4">
+        <div className="flex items-center justify-between border-b border-white/5 bg-[#212121] px-6 py-4 shrink-0">
           <div className="flex items-center gap-3">
             <div
               className={`h-3 w-3 rounded-full ${modelLoaded ? "bg-green-500 animate-pulse" : "bg-yellow-500"}`}
@@ -53,7 +58,51 @@ const AiModel = () => {
         </div>
 
         {modelLoaded ? (
-          <>
+          <div className="flex flex-1 min-h-0">
+            {/* Chat history sidebar */}
+            <div className="w-56 shrink-0 border-r border-white/5 bg-[#1a1a1a] flex flex-col overflow-hidden">
+              <button
+                onClick={createNewChat}
+                className="m-3 flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white hover:bg-white/10 transition-all"
+              >
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                New chat
+              </button>
+              <div className="flex-1 overflow-y-auto custom-scrollbar px-2 pb-4">
+                {sessions.map((session) => (
+                  <div
+                    key={session.id}
+                    className={`group flex items-center gap-2 rounded-lg px-3 py-2.5 mb-0.5 cursor-pointer transition-all ${
+                      session.id === activeSessionId
+                        ? "bg-white/10 text-white"
+                        : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
+                    }`}
+                    onClick={() => switchChat(session.id)}
+                  >
+                    <span className="flex-1 truncate text-sm" title={session.title}>
+                      {session.title}
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteChat(session.id);
+                      }}
+                      className="opacity-0 group-hover:opacity-100 p-1 rounded text-gray-500 hover:text-red-400 hover:bg-white/5 transition-all"
+                      title="Delete chat"
+                    >
+                      <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Main chat area */}
+            <div className="flex-1 flex flex-col min-w-0">
             <div
               ref={scrollRef}
               className="flex-1 overflow-y-auto custom-scrollbar space-y-6 p-6 scroll-smooth"
@@ -127,7 +176,7 @@ const AiModel = () => {
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-white/5 bg-[#171717] p-6">
+            <div className="border-t border-white/5 bg-[#171717] p-6 shrink-0">
               <form
                 onSubmit={handleSend}
                 className="relative flex items-end gap-2 rounded-xl border border-white/10 bg-[#212121] p-2 focus-within:border-blue-500/50 transition-all shadow-inner"
@@ -176,7 +225,8 @@ const AiModel = () => {
                 </button>
               </form>
             </div>
-          </>
+            </div>
+          </div>
         ) : (
           /* Professional Loading Screen */
           <div className="flex flex-1 flex-col items-center justify-center space-y-6 bg-[#171717]">
