@@ -8,9 +8,9 @@ import AiContextProvider from './contexts/AiContexts/AiContextProvider.jsx'
 createRoot(document.getElementById("root")).render(
   <AppContextProvider>
     <EditorContextProvider>
-      {/* <AiContextProvider> */}
+      <AiContextProvider> 
         <App></App>
-      {/* </AiContextProvider> */}
+      </AiContextProvider>
     </EditorContextProvider>
   </AppContextProvider>,
 );

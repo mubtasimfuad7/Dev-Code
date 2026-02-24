@@ -9,7 +9,7 @@ const initEngine = async (setStatus) => {
   // 2. Initialize the engine inside that worker
   const engine = await CreateWebWorkerMLCEngine(
     worker,
-    "Qwen2-1.5B-Instruct-q4f16_1-MLC",
+    "Qwen2.5-3B-Instruct-q4f16_1-MLC",
     {
       initProgressCallback: (report) => setStatus(report.text),
     },
